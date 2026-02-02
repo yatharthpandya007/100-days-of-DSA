@@ -1,0 +1,46 @@
+Delete an Element from an Array
+
+Problem: Write a C program to delete the element at a given 1-based position pos from an array of n integers. Shift remaining elements to the left.
+
+Input:
+- First line: integer n
+- Second line: n space-separated integers
+- Third line: integer pos (1-based position to delete)
+
+Output:
+- Print the updated array with (n-1) elements, space-separated
+
+Example:
+Input:
+5
+10 20 30 40 50
+2
+
+Output:
+10 30 40 50
+
+Explanation: Delete position 2 (element 20), remaining elements shift left
+#include<stdio.h>
+int main(){
+    int n,size,index,k,arr[100];
+    printf("enter the number of elements you want in array\n");
+    scanf("%d",&n);
+    size=n;
+    for(int i=0;i<size;i++){
+        printf("enter the %d element of the array\n",i);
+        scanf("%d",&arr[i]);
+    }
+    
+    
+    printf("enter the index of the element you want to delete\n");
+    scanf("%d",&index);
+    for(int i=index;i<size;i++){
+        arr[i]=arr[i+1];
+     }
+    size--;
+    for(int i=0;i<size;i++){
+        printf("%d",arr[i]);
+    }
+    return 0;
+
+}

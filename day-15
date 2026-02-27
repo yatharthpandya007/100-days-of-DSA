@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+int main() {
+    int m, n;
+    
+    // Read the dimensions of the matrix
+    if (scanf("%d %d", &m, &n) != 2) {
+        return 1; // Exit if input fails
+    }
+
+    int sum = 0;
+    int current_element;
+
+    // Loop through the rows and columns
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &current_element);
+            
+            // Primary diagonal condition: row index equals column index
+            if (i == j) {
+                sum += current_element;
+            }
+        }
+    }
+
+    // Print the final sum
+    printf("%d\n", sum);
+
+    return 0;
+}

@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a linked list node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function specifically dedicated to counting the nodes
+int countNodes(struct Node* head) {
+    int count = 0;
+    struct Node* current = head;
+    
+    // Traverse the list, incrementing the count for each node
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    
+    return count;
+}
+
+int main() {
+    int n;
+    
+    // Read the number of elements
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        return 0; // Exit gracefully if there are no elements
+    }
+
+    struct Node* head = NULL;
+    struct Node* tail = NULL;
+
+    // Step 1: Create the linked list
+    for (int i = 0; i < n; i++) {
+        int value;
+        scanf("%d", &value);
+
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // Step 2: Traverse and print the linked list (matching your example output)
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+
+    // Step 3: Count and print the total number of nodes
+    int total = countNodes(head);
+    printf("Total Nodes: %d\n", total);
+
+    // Step 4: Free the allocated memory
+    current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+
+    return 0;
+}

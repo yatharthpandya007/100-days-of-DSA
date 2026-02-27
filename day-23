@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a linked list node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Helper function to create a linked list of a given size
+struct Node* createList(int size) {
+    if (size <= 0) return NULL;
+
+    struct Node* head = NULL;
+    struct Node* tail = NULL;
+
+    for (int i = 0; i < size; i++) {
+        int value;
+        scanf("%d", &value);
+
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+    return head;
+}
+
+// Function to merge two sorted linked lists
+struct Node* mergeSortedLists(struct Node* l1, struct Node* l2) {
+    // Dummy node to serve as the starting point of the merged list
+    struct Node dummy;
+    struct Node* tail = &dummy;
+    dummy.next = NULL;
+
+    // Traverse both lists and attach the smaller node to the tail
+    while (l1 != NULL && l2 != NULL) {
+        if (l1->data <= l2->data) {
+            tail->next = l1;
+            l1 = l1->next;
+        } else {
+            tail->next = l2;
+            l2 = l2->next;
+        }
+        tail = tail->next;
+    }
+
+    // If any nodes are left in either list, attach them to the end
+    if (l1 != NULL) {
+        tail->next = l1;
+    } else {
+        tail->next = l2;
+    }
+
+    // Return the actual head of the merged list (skipping the dummy node)
+    return dummy.next;
+}
+
+int main() {
+    int n, m;
+
+    // Read the size and elements of the first list
+    if (scanf("%d", &n) != 1) return 1;
+    struct Node* list1 = createList(n);
+
+    // Read the size and elements of the second list
+    if (scanf("%d", &m) != 1) return 1;
+    struct Node* list2 = createList(m);
+
+    // Merge the two lists
+    struct Node* mergedHead = mergeSortedLists(list1, list2);
+
+    // Traverse and print the merged list
+    struct Node* current = mergedHead;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+
+    // Free the allocated memory to prevent memory leaks
+    current = mergedHead;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+
+    return 0;
+}

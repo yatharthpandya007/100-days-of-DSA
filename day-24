@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create the initial linked list
+struct Node* createList(int n) {
+    if (n <= 0) return NULL;
+    struct Node *head = NULL, *tail = NULL;
+    for (int i = 0; i < n; i++) {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        scanf("%d", &newNode->data);
+        newNode->next = NULL;
+        if (head == NULL) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+    return head;
+}
+
+// Function to delete the first occurrence of a key
+struct Node* deleteKey(struct Node* head, int key) {
+    if (head == NULL) return NULL;
+
+    // Case 1: The head node itself holds the key
+    if (head->data == key) {
+        struct Node* temp = head;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+
+    // Case 2: Search for the key in the rest of the list
+    struct Node* current = head;
+    while (current->next != NULL && current->next->data != key) {
+        current = current->next;
+    }
+
+    // If the key was found (current->next is the node to delete)
+    if (current->next != NULL) {
+        struct Node* temp = current->next;
+        current->next = current->next->next; // Bypass the node
+        free(temp); // Free memory
+    }
+
+    return head;
+}
+
+void printList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    int n, key;
+    if (scanf("%d", &n) != 1) return 0;
+    
+    struct Node* head = createList(n);
+    
+    if (scanf("%d", &key) != 1) return 0;
+
+    head = deleteKey(head, key);
+    printList(head);
+
+    // Cleanup: Free remaining memory
+    while (head != NULL) {
+        struct Node* temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    return 0;
+}

@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a linked list node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+int main() {
+    int n;
+    
+    // Read the number of elements
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        return 0; // Exit gracefully if there are no elements
+    }
+
+    struct Node* head = NULL;
+    struct Node* tail = NULL;
+
+    // Step 1: Create the linked list
+    for (int i = 0; i < n; i++) {
+        int value;
+        scanf("%d", &value);
+
+        // Allocate memory for the new node
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = value;
+        newNode->next = NULL;
+
+        // If the list is empty, the new node becomes both head and tail
+        if (head == NULL) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            // Otherwise, attach it to the current tail and update the tail pointer
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    // Step 2: Traverse and print the linked list
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next; // Move to the next node
+    }
+    printf("\n");
+
+    // Step 3: Free the allocated memory to prevent memory leaks
+    current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+
+    return 0;
+}

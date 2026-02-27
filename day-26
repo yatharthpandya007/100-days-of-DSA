@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a Doubly Linked List node
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+// Function to create and insert a node at the end of the DLL
+struct Node* insertAtEnd(struct Node* head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    // If the list is empty, return the new node as the head
+    if (head == NULL) {
+        return newNode;
+    }
+
+    // Traverse to the last node
+    struct Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    // Link the last node and the new node
+    temp->next = newNode;
+    newNode->prev = temp;
+
+    return head;
+}
+
+int main() {
+    int n;
+    struct Node* head = NULL;
+
+    // Read the number of elements
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        return 0;
+    }
+
+    // Step 1: Create the Doubly Linked List
+    for (int i = 0; i < n; i++) {
+        int val;
+        scanf("%d", &val);
+        head = insertAtEnd(head, val);
+    }
+
+    // Step 2: Forward Traversal
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+
+    // Step 3: Free Memory (Cleanup)
+    current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+
+    return 0;
+}

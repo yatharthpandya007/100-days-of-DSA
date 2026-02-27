@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Comparison function required by qsort() for long long integers
+int compare(const void *a, const void *b) {
+    long long val_a = *(long long*)a;
+    long long val_b = *(long long*)b;
+    
+    if (val_a < val_b) return -1;
+    if (val_a > val_b) return 1;
+    return 0;
+}
+
+int main() {
+    int n;
+    
+    // Read the size of the array
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        return 1; // Exit if input fails or n is invalid
+    }
+
+    long long prefix[n];
+    long long current_sum = 0;
+    int element;
+
+    // Step 1: Calculate the prefix sums
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &element);
+        current_sum += element;
+        prefix[i] = current_sum; // Store the running total
+    }
+
+    // Step 2: Sort the prefix sum array
+    qsort(prefix, n, sizeof(long long), compare);
+
+    long long total_zero_subarrays = 0;
+    long long duplicate_count = 1;
+
+    // Step 3: Count zero-sums and duplicate prefix sums
+    for (int i = 0; i < n; i++) {
+        // A prefix sum of 0 means the subarray from the very beginning sums to 0
+        if (prefix[i] == 0) {
+            total_zero_subarrays++; 
+        }
+
+        // Count how many times the same prefix sum appears consecutively
+        if (i > 0 && prefix[i] == prefix[i - 1]) {
+            duplicate_count++;
+        } else {
+            // If the streak breaks, calculate combinations for the duplicates
+            if (duplicate_count > 1) {
+                total_zero_subarrays += (duplicate_count * (duplicate_count - 1)) / 2;
+            }
+            duplicate_count = 1; // Reset for the next unique number
+        }
+    }
+    
+    // Catch the final streak of duplicates if the array ends with them
+    if (duplicate_count > 1) {
+        total_zero_subarrays += (duplicate_count * (duplicate_count - 1)) / 2;
+    }
+
+    // Print the final count
+    printf("%lld\n", total_zero_subarrays);
+
+    return 0;
+}

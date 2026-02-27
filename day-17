@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int main() {
+    int n;
+    
+    // Read the size of the array
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        return 1; // Exit if input fails or n is invalid
+    }
+
+    int current_element, max, min;
+
+    // Read the first element and initialize both max and min with it
+    scanf("%d", &current_element);
+    max = current_element;
+    min = current_element;
+
+    // Loop to read the remaining n-1 elements
+    for (int i = 1; i < n; i++) {
+        scanf("%d", &current_element);
+        
+        // Update max if the current element is strictly greater
+        if (current_element > max) {
+            max = current_element;
+        }
+        
+        // Update min if the current element is strictly smaller
+        if (current_element < min) {
+            min = current_element;
+        }
+    }
+
+    // Print the results
+    printf("Max: %d\n", max);
+    printf("Min: %d\n", min);
+
+    return 0;
+}
